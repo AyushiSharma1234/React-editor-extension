@@ -3628,28 +3628,4 @@ const graphicTemplate = {
   content: [...layers],
 }
 
-const presentationTemplate = {
-  id: "",
-  name: "",
-  type: "PRESENTATION",
-  frame: {},
-  content: [
-    {
-      duration: 1000,
-      layers: [],
-    },
-  ],
-}
 
-const VideoTemplate = {
-  id: "",
-  name: "",
-  type: "VIDEO",
-  frame: {},
-  content: [
-    {
-      duration: 1000,
-      layers: [],
-    },
-  ],
-}

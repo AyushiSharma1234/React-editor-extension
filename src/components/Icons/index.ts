@@ -4,8 +4,6 @@ import Text from "./Text"
 import Templates from "./Templates"
 import Search from "./Search"
 import Images from "./Images"
-import Graphics from "./Graphics"
-import Pixabay from "./Pixabay"
 import Uploads from "./Uploads"
 import Logo from "./Logo"
 import Compress from "./Compress"
@@ -23,7 +21,6 @@ import SwapHorizontal from "./SwapHorizontal"
 import ArrowBackOutline from "./ArrowBackOutline"
 import Underline from "./Underline"
 import Add from "./Add"
-import Video from "./Video"
 class Icons {
   static Background = Background
   static Elements = Elements
@@ -31,9 +28,6 @@ class Icons {
   static Templates = Templates
   static Search = Search
   static Images = Images
-  static Videos = Video
-  static Graphics = Graphics
-  static Pixabay = Pixabay
   static Uploads = Uploads
   static Logo = Logo
   static Compress = Compress
