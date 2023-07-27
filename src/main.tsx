@@ -4,7 +4,7 @@ import Router from "./Router"
 import Container from "./Container"
 import "./styles/styles.css"
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById("root_shopasign")!).render(
   <Provider>
     <Container>
       <Router />
