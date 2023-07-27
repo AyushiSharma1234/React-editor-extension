@@ -6,7 +6,7 @@ export interface Page {
   preview: string
 }
 
-export type DesignType = "GRAPHIC" | "NONE"
+export type DesignType = "GRAPHIC" | "PRESENTATION" | "VIDEO" | "NONE"
 
 export interface ContextMenuTimelineRequest {
   id: string
@@ -28,7 +28,7 @@ export interface IDesign {
   frame: IFrame
   type: string
   scenes: any[]
-  previews: { id: string; src: string }[] | ''
+  previews: { id: string; src: string }[]
   metadata: {}
   published: boolean
 }

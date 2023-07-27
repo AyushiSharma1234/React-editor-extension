@@ -3,13 +3,13 @@ import { Block } from "baseui/block"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import Scrollable from "~/components/Scrollable"
 import { Button, SIZE } from "baseui/button"
+import DropZone from "~/components/Dropzone"
 import { useEditor } from "@layerhub-io/react"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 import { nanoid } from "nanoid"
 import { captureFrame, loadVideoResource } from "~/utils/video"
 import { ILayer } from "@layerhub-io/types"
 import { toBase64 } from "~/utils/data"
-import DropZone from "~/components/Dropzone"
 
 export default function () {
   const inputFileRef = React.useRef<HTMLInputElement>(null)

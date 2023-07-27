@@ -6,6 +6,7 @@ import Pixabay from "./Pixabay"
 import Templates from "./Templates"
 import Uploads from "./Uploads"
 import Images from "./Images"
+import Videos from "./Videos"
 import Layers from "./Layers"
 import Elements from "./Elements"
 import Graphics from "./Graphics"
@@ -22,6 +23,7 @@ export default {
   Templates: Templates,
   Uploads: Uploads,
   Images: Images,
+  Videos: Videos,
   Elements: Elements,
   Graphics: Graphics,
   Layers: Layers,

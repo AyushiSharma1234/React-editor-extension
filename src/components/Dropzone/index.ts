@@ -1,1 +1,3 @@
-export { default as default } from "./DropZone"
+import DropZone from './DropZone'
+
+export default DropZone

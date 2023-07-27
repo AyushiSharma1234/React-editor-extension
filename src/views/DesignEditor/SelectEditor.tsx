@@ -3,7 +3,9 @@ import { Block } from "baseui/block"
 import { Button } from "baseui/button"
 import { DesignType } from "~/interfaces/DesignEditor"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import Video from "~/components/Icons/Video"
 import Images from "~/components/Icons/Images"
+import Presentation from "~/components/Icons/Presentation"
 
 const SelectEditor = () => {
   const [selectedEditor, setSelectedEditor] = React.useState<DesignType>("GRAPHIC")
@@ -40,11 +42,46 @@ const SelectEditor = () => {
               cursor: "pointer",
               flexDirection: "column",
               gap: "0.5rem",
-              margin: "0 auto",
             }}
           >
             <Images size={34} />
             <Block>Graphic</Block>
+          </Block>
+          <Block
+            onClick={() => setSelectedEditor("PRESENTATION")}
+            $style={{
+              height: "180px",
+              width: "180px",
+              background: selectedEditor === "PRESENTATION" ? "#000000" : "rgb(231, 236, 239)",
+              color: selectedEditor === "PRESENTATION" ? "#ffffff" : "#333333",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              flexDirection: "column",
+              gap: "0.5rem",
+            }}
+          >
+            <Presentation size={36} />
+            <Block>Presentation</Block>
+          </Block>
+          <Block
+            onClick={() => setSelectedEditor("VIDEO")}
+            $style={{
+              height: "180px",
+              width: "180px",
+              background: selectedEditor === "VIDEO" ? "#000000" : "rgb(231, 236, 239)",
+              color: selectedEditor === "VIDEO" ? "#ffffff" : "#333333",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              flexDirection: "column",
+              gap: "0.5rem",
+            }}
+          >
+            <Video size={36} />
+            <Block>Video</Block>
           </Block>
         </Block>
         <Block $style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem" }}>
