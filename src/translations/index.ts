@@ -2,7 +2,7 @@ import i18next from "i18next"
 
 import common_es from "./es/common.json"
 import common_en from "./en/common.json"
-import editor_en from "./en/editor.json"
+import editor_en from "./en/editor"
 import editor_es from "./es/editor.json"
 
 i18next.init({

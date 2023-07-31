@@ -8,17 +8,17 @@ export const BASE_ITEMS = [
     name: "Customize",
   },
   {
-    id: "elements",
+    id: "shapes",
     name: "Elements",
   },
   {
     id: "images",
     name: "Images",
   },
-  {
-    id: "uploads",
-    name: "Uploads",
-  },
+  // {
+  //   id: "uploads",
+  //   name: "Uploads",
+  // },
   {
     id: "text",
     name: "Text",
