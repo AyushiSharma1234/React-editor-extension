@@ -59,14 +59,14 @@ const Scenes = () => {
     }
   }, [editor])
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (editor) {
       if (currentScene) {
         updateCurrentScene(currentScene)
       } else {
         const defaultTemplate = getDefaultTemplate({
-          width: 1200,
-          height: 1200,
+          width: 2304,
+          height: 1728,
         })
         setCurrentDesign({
           id: nanoid(),
