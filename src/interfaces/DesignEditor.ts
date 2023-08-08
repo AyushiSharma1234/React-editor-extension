@@ -28,9 +28,10 @@ export interface IDesign {
   frame: IFrame
   type: string
   scenes: any[]
-  previews: { id: string; src: string }[]
+  preview: { id: string; src: string }[] | null
   metadata: {}
-  published: boolean
+  published?: boolean
+  imageUrls?:any
 }
 
 export interface IComponent extends Omit<IScene, "preview"> {
