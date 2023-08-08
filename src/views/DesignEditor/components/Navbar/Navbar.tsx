@@ -4,7 +4,6 @@ import { Theme } from "baseui/theme"
 import { Button, KIND } from "baseui/button"
 import Logo from "~/components/Icons/Logo"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
-import Play from "~/components/Icons/Play"
 import { Block } from "baseui/block"
 import { useEditor } from "@layerhub-io/react"
 import useEditorType from "~/hooks/useEditorType"
@@ -13,7 +12,6 @@ import { loadTemplateFonts } from "~/utils/fonts"
 import { loadVideoEditorAssets } from "~/utils/video"
 import DesignTitle from "./DesignTitle"
 import { IDesign } from "~/interfaces/DesignEditor"
-import Github from "~/components/Icons/Github"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -32,6 +30,15 @@ const Navbar = () => {
 
   const parseGraphicJSON = () => {
     const currentScene = editor.scene.exportToJSON()
+
+    let images:any=[]
+
+    document.querySelectorAll("#TimelineItemsContainer img").forEach((img) => {
+      const src = img.getAttribute("src")
+      images.push(src)
+    })
+    console.log(images)
+    
 
     const updatedScenes = scenes.map((scn) => {
       if (scn.id === currentScene.id) {
@@ -56,7 +63,8 @@ const Navbar = () => {
         frame: currentDesign.frame,
         scenes: updatedScenes,
         metadata: {},
-        preview: "",
+        preview: null,
+        imageUrls: images,
       }
       makeDownload(graphicTemplate)
     } else {
@@ -92,7 +100,7 @@ const Navbar = () => {
         frame: currentDesign.frame,
         scenes: updatedScenes,
         metadata: {},
-        preview: "",
+        preview: null,
       }
       makeDownload(presentationTemplate)
     } else {
@@ -126,7 +134,7 @@ const Navbar = () => {
         frame: currentDesign.frame,
         scenes: updatedScenes,
         metadata: {},
-        preview: "",
+        preview: null,
       }
       makeDownload(videoTemplate)
     } else {
@@ -303,37 +311,6 @@ const Navbar = () => {
             }}
           >
             Export
-          </Button>
-          <Button
-            size="compact"
-            onClick={() => setDisplayPreview(true)}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
-          >
-            <Play size={24} />
-          </Button>
-
-          <Button
-            size="compact"
-            onClick={() => window.location.replace("https://github.com/layerhub-io/react-design-editor")}
-            kind={KIND.tertiary}
-          >
-            <Github size={24} />
-          </Button>
-
-          <Button
-            style={{ marginLeft: "0.5rem" }}
-            size="compact"
-            onClick={() => window.location.replace("https://app.scenify.io")}
-            kind={KIND.primary}
-          >
-            Try PRO
           </Button>
         </Block>
       </Container>

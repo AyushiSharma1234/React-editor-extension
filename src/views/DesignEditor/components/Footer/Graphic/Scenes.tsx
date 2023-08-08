@@ -73,7 +73,7 @@ const Scenes = () => {
           frame: defaultTemplate.frame,
           metadata: {},
           name: "Untitled Design",
-          preview: "",
+          preview: null,
           scenes: [],
           type: "PRESENTATION",
         })
