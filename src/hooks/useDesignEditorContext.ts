@@ -21,6 +21,12 @@ const useDesignEditorContext = () => {
     setContextMenuSceneRequest,
     currentDesign,
     setCurrentDesign,
+    setCategories,
+    setFetchedTemplates,
+    fetchedTemplates,
+    categories,
+    filteredTemplates,
+    setFilteredTemplates,
   } = useContext(DesignEditorContext)
   return {
     editorType,
@@ -41,6 +47,12 @@ const useDesignEditorContext = () => {
     setContextMenuSceneRequest,
     currentDesign,
     setCurrentDesign,
+    setFetchedTemplates,
+    setCategories,
+    fetchedTemplates,
+    categories,
+    filteredTemplates,
+    setFilteredTemplates,
   }
 }
 

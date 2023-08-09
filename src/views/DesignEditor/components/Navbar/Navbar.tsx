@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext, useEffect } from "react"
 import { styled, ThemeProvider, DarkTheme } from "baseui"
 import { Theme } from "baseui/theme"
 import { Button, KIND } from "baseui/button"
@@ -12,6 +12,7 @@ import { loadTemplateFonts } from "~/utils/fonts"
 import { loadVideoEditorAssets } from "~/utils/video"
 import DesignTitle from "./DesignTitle"
 import { IDesign } from "~/interfaces/DesignEditor"
+import axios from "axios"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -23,7 +24,8 @@ const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
 }))
 
 const Navbar = () => {
-  const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign, scenes } = useDesignEditorContext()
+  const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign, scenes, setCategories,categories, setFetchedTemplates,setFilteredTemplates } =
+    useDesignEditorContext()
   const editorType = useEditorType()
   const editor = useEditor()
   const inputFileRef = React.useRef<HTMLInputElement>(null)
@@ -31,14 +33,9 @@ const Navbar = () => {
   const parseGraphicJSON = () => {
     const currentScene = editor.scene.exportToJSON()
 
-    let images:any=[]
-
-    document.querySelectorAll("#TimelineItemsContainer img").forEach((img) => {
-      const src = img.getAttribute("src")
-      images.push(src)
-    })
-    console.log(images)
-    
+    const img = document.querySelector("#TimelineItemsContainer img") as HTMLElement
+    const src = img.getAttribute("src")
+    let image = src
 
     const updatedScenes = scenes.map((scn) => {
       if (scn.id === currentScene.id) {
@@ -64,7 +61,7 @@ const Navbar = () => {
         scenes: updatedScenes,
         metadata: {},
         preview: null,
-        imageUrls: images,
+        imageUrl: image,
       }
       makeDownload(graphicTemplate)
     } else {
@@ -175,7 +172,7 @@ const Navbar = () => {
         metadata: {},
       }
       const loadedScene = await loadVideoEditorAssets(scene)
-      await loadTemplateFonts(loadedScene)
+      await loadTemplateFonts(loadedScene)     
 
       const preview = (await editor.renderer.render(loadedScene)) as string
       scenes.push({ ...loadedScene, preview })
@@ -184,58 +181,54 @@ const Navbar = () => {
     return { scenes, design }
   }
 
-  const loadPresentationTemplate = async (payload: IDesign) => {
-    const scenes = []
-    const { scenes: scns, ...design } = payload
+  // const loadPresentationTemplate = async (payload: IDesign) => {
+  //   const scenes = []
+  //   const { scenes: scns, ...design } = payload
 
-    for (const scn of scns) {
-      const scene: IScene = {
-        name: scn.name,
-        frame: payload.frame,
-        id: scn,
-        layers: scn.layers,
-        metadata: {},
-      }
-      const loadedScene = await loadVideoEditorAssets(scene)
+  //   for (const scn of scns) {
+  //     const scene: IScene = {
+  //       name: scn.name,
+  //       frame: payload.frame,
+  //       id: scn,
+  //       layers: scn.layers,
+  //       metadata: {},
+  //     }
+  //     const loadedScene = await loadVideoEditorAssets(scene)
 
-      const preview = (await editor.renderer.render(loadedScene)) as string
-      await loadTemplateFonts(loadedScene)
-      scenes.push({ ...loadedScene, preview })
-    }
-    return { scenes, design }
-  }
+  //     const preview = (await editor.renderer.render(loadedScene)) as string
+  //     await loadTemplateFonts(loadedScene)
+  //     scenes.push({ ...loadedScene, preview })
+  //   }
+  //   return { scenes, design }
+  // }
 
-  const loadVideoTemplate = async (payload: IDesign) => {
-    const scenes = []
-    const { scenes: scns, ...design } = payload
+  // const loadVideoTemplate = async (payload: IDesign) => {
+  //   const scenes = []
+  //   const { scenes: scns, ...design } = payload
 
-    for (const scn of scns) {
-      const design: IScene = {
-        name: "Awesome template",
-        frame: payload.frame,
-        id: scn.id,
-        layers: scn.layers,
-        metadata: {},
-        duration: scn.duration,
-      }
-      const loadedScene = await loadVideoEditorAssets(design)
+  //   for (const scn of scns) {
+  //     const design: IScene = {
+  //       name: "Awesome template",
+  //       frame: payload.frame,
+  //       id: scn.id,
+  //       layers: scn.layers,
+  //       metadata: {},
+  //       duration: scn.duration,
+  //     }
+  //     const loadedScene = await loadVideoEditorAssets(design)
 
-      const preview = (await editor.renderer.render(loadedScene)) as string
-      await loadTemplateFonts(loadedScene)
-      scenes.push({ ...loadedScene, preview })
-    }
-    return { scenes, design }
-  }
+  //     const preview = (await editor.renderer.render(loadedScene)) as string
+  //     await loadTemplateFonts(loadedScene)
+  //     scenes.push({ ...loadedScene, preview })
+  //   }
+  //   return { scenes, design }
+  // }
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
       let template
       if (data.type === "GRAPHIC") {
         template = await loadGraphicTemplate(data)
-      } else if (data.type === "PRESENTATION") {
-        template = await loadPresentationTemplate(data)
-      } else if (data.type === "VIDEO") {
-        template = await loadVideoTemplate(data)
       }
       //   @ts-ignore
       setScenes(template.scenes)
@@ -265,6 +258,20 @@ const Navbar = () => {
       reader.readAsText(file)
     }
   }
+
+  const fetchTemplates = async () => {
+    const { data } = await axios.get(
+      "https://its-besides-minneapolis-logging.trycloudflare.com/proxy?endpoint=getTemplates"
+    )
+    const categoryArray:any = categories.concat(data.data.categoryData)
+    setCategories(categoryArray)
+    setFetchedTemplates(data.data.templateData)
+    setFilteredTemplates(data.data.templateData)
+  }
+
+  useEffect(() => {
+    fetchTemplates()
+  }, [])
 
   return (
     // @ts-ignore

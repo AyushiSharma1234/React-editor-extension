@@ -40,3 +40,21 @@ input[type="number"] {
 .react-player video {
     max-height: 740px;
 }
+.template_image_col {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.template_image_col img {
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.template_image_row {
+    padding-top: 30px;
+}
+.category_dropdown svg.fw.gf.ha.hb.hc {
+    display: none;
+}
