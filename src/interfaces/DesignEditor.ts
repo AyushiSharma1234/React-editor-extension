@@ -31,7 +31,8 @@ export interface IDesign {
   preview: { id: string; src: string }[] | null
   metadata: {}
   published?: boolean
-  imageUrls?:any
+  imageUrl?:string | null
+  category?:string | null
 }
 
 export interface IComponent extends Omit<IScene, "preview"> {

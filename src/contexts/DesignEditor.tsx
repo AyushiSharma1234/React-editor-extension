@@ -25,6 +25,12 @@ interface ISceneEditorContext {
   setContextMenuTimelineRequest: React.Dispatch<React.SetStateAction<ContextMenuTimelineRequest>>
   contextMenuSceneRequest: ContextMenuTimelineRequest
   setContextMenuSceneRequest: React.Dispatch<React.SetStateAction<ContextMenuTimelineRequest>>
+  setCategories: React.Dispatch<React.SetStateAction<string>>
+  categories: string[]
+  setFetchedTemplates: React.Dispatch<React.SetStateAction<IDesign[]>>
+  fetchedTemplates: IDesign[]
+  filteredTemplates: IDesign[]
+  setFilteredTemplates: React.Dispatch<React.SetStateAction<IDesign[] | undefined>>
 }
 
 export const DesignEditorContext = React.createContext<ISceneEditorContext>({
@@ -71,7 +77,8 @@ export const DesignEditorContext = React.createContext<ISceneEditorContext>({
     visible: false,
   },
   setContextMenuSceneRequest: () => {},
-
+  imageUrl:'',
+  category:''
 })
 
 export const DesignEditorProvider = ({ children }: { children: React.ReactNode }) => {
@@ -95,6 +102,9 @@ export const DesignEditorProvider = ({ children }: { children: React.ReactNode }
   const [displayPreview, setDisplayPreview] = React.useState<boolean>(false)
   const [currentPreview, setCurrentPreview] = React.useState<string>("")
   const [maxTime, setMaxTime] = React.useState(5000)
+  const [fetchedTemplates, setFetchedTemplates] = React.useState<IDesign[]>()
+  const [filteredTemplates, setFilteredTemplates] = React.useState<IDesign[]>()
+  const [categories, setCategories] = React.useState<string[]>(["Select a category"])
   const [contextMenuTimelineRequest, setContextMenuTimelineRequest] = React.useState<ContextMenuTimelineRequest>({
     id: "",
     left: 0,
@@ -130,6 +140,12 @@ export const DesignEditorProvider = ({ children }: { children: React.ReactNode }
     setContextMenuTimelineRequest,
     contextMenuSceneRequest,
     setContextMenuSceneRequest,
+    setFetchedTemplates,
+    fetchedTemplates,
+    setCategories,
+    categories,
+    filteredTemplates,
+    setFilteredTemplates,
   }
   return <DesignEditorContext.Provider value={context}>{children}</DesignEditorContext.Provider>
 }
