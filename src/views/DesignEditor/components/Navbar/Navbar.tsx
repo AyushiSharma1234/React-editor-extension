@@ -40,17 +40,25 @@ const Navbar = () => {
   const inputFileRef = React.useRef<HTMLInputElement>(null)
 
   const postTemplate = async (template: IDesign) => {
-    const templateToPost={"template":template}
+    const templateToPost = { template: template }
     await axios
       .post(
-        "https://encounter-commentary-vi-bridges.trycloudflare.com/proxy/upload?endpoint=attachTemplate",
+        "https://richard-carried-writing-jason.trycloudflare.com/proxy/upload?endpoint=attachTemplate",
         templateToPost
       )
       .then((res) => {
-        console.log("Template has been uplaoded", res)
+        const inputElement = document.getElementById("shopasign-export") as HTMLElement
+        const elem = document.getElementById("root_shopAsign") as HTMLElement
+        inputElement.setAttribute("value", res.data.fileUrl)
+        if (elem.hasAttribute("open")) {
+          elem.removeAttribute("open")
+        } else {
+          elem.setAttribute("open", "open")
+        }
       })
       .catch((e) => {
         console.log("Template has not uploaded", e)
+        alert("Something went wrong!")
       })
   }
 
@@ -96,7 +104,6 @@ const Navbar = () => {
 
   const makeDownload = (data: Object) => {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data))}`
-    console.log("dataStr", dataStr)
 
     const a = document.createElement("a")
     a.href = dataStr
