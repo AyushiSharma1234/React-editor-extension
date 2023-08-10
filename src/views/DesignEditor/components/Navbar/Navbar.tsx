@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { styled, ThemeProvider, DarkTheme } from "baseui"
 import { Theme } from "baseui/theme"
 import { Button, KIND } from "baseui/button"
@@ -24,11 +24,35 @@ const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
 }))
 
 const Navbar = () => {
-  const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign, scenes, setCategories,categories, setFetchedTemplates,setFilteredTemplates } =
-    useDesignEditorContext()
+  const {
+    setDisplayPreview,
+    setScenes,
+    setCurrentDesign,
+    currentDesign,
+    scenes,
+    setCategories,
+    categories,
+    setFetchedTemplates,
+    setFilteredTemplates,
+  } = useDesignEditorContext()
   const editorType = useEditorType()
   const editor = useEditor()
   const inputFileRef = React.useRef<HTMLInputElement>(null)
+
+  const postTemplate = async (template: IDesign) => {
+    const templateToPost={"template":template}
+    await axios
+      .post(
+        "https://encounter-commentary-vi-bridges.trycloudflare.com/proxy/upload?endpoint=attachTemplate",
+        templateToPost
+      )
+      .then((res) => {
+        console.log("Template has been uplaoded", res)
+      })
+      .catch((e) => {
+        console.log("Template has not uploaded", e)
+      })
+  }
 
   const parseGraphicJSON = () => {
     const currentScene = editor.scene.exportToJSON()
@@ -63,77 +87,8 @@ const Navbar = () => {
         preview: null,
         imageUrl: image,
       }
+      postTemplate(graphicTemplate)
       makeDownload(graphicTemplate)
-    } else {
-      console.log("NO CURRENT DESIGN")
-    }
-  }
-
-  const parsePresentationJSON = () => {
-    const currentScene = editor.scene.exportToJSON()
-
-    const updatedScenes = scenes.map((scn) => {
-      if (scn.id === currentScene.id) {
-        return {
-          id: currentScene.id,
-          duration: 5000,
-          layers: currentScene.layers,
-          name: currentScene.name,
-        }
-      }
-      return {
-        id: scn.id,
-        duration: 5000,
-        layers: scn.layers,
-        name: scn.name,
-      }
-    })
-
-    if (currentDesign) {
-      const presentationTemplate: IDesign = {
-        id: currentDesign.id,
-        type: "PRESENTATION",
-        name: currentDesign.name,
-        frame: currentDesign.frame,
-        scenes: updatedScenes,
-        metadata: {},
-        preview: null,
-      }
-      makeDownload(presentationTemplate)
-    } else {
-      console.log("NO CURRENT DESIGN")
-    }
-  }
-
-  const parseVideoJSON = () => {
-    const currentScene = editor.scene.exportToJSON()
-    const updatedScenes = scenes.map((scn) => {
-      if (scn.id === currentScene.id) {
-        return {
-          id: scn.id,
-          duration: scn.duration,
-          layers: currentScene.layers,
-          name: currentScene.name ? currentScene.name : "",
-        }
-      }
-      return {
-        id: scn.id,
-        duration: scn.duration,
-        layers: scn.layers,
-        name: scn.name ? scn.name : "",
-      }
-    })
-    if (currentDesign) {
-      const videoTemplate: IDesign = {
-        id: currentDesign.id,
-        type: "VIDEO",
-        name: currentDesign.name,
-        frame: currentDesign.frame,
-        scenes: updatedScenes,
-        metadata: {},
-        preview: null,
-      }
-      makeDownload(videoTemplate)
     } else {
       console.log("NO CURRENT DESIGN")
     }
@@ -141,6 +96,8 @@ const Navbar = () => {
 
   const makeDownload = (data: Object) => {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data))}`
+    console.log("dataStr", dataStr)
+
     const a = document.createElement("a")
     a.href = dataStr
     a.download = "template.json"
@@ -151,10 +108,6 @@ const Navbar = () => {
     if (editor) {
       if (editorType === "GRAPHIC") {
         return parseGraphicJSON()
-      } else if (editorType === "PRESENTATION") {
-        return parsePresentationJSON()
-      } else {
-        return parseVideoJSON()
       }
     }
   }
@@ -172,7 +125,7 @@ const Navbar = () => {
         metadata: {},
       }
       const loadedScene = await loadVideoEditorAssets(scene)
-      await loadTemplateFonts(loadedScene)     
+      await loadTemplateFonts(loadedScene)
 
       const preview = (await editor.renderer.render(loadedScene)) as string
       scenes.push({ ...loadedScene, preview })
@@ -180,49 +133,6 @@ const Navbar = () => {
 
     return { scenes, design }
   }
-
-  // const loadPresentationTemplate = async (payload: IDesign) => {
-  //   const scenes = []
-  //   const { scenes: scns, ...design } = payload
-
-  //   for (const scn of scns) {
-  //     const scene: IScene = {
-  //       name: scn.name,
-  //       frame: payload.frame,
-  //       id: scn,
-  //       layers: scn.layers,
-  //       metadata: {},
-  //     }
-  //     const loadedScene = await loadVideoEditorAssets(scene)
-
-  //     const preview = (await editor.renderer.render(loadedScene)) as string
-  //     await loadTemplateFonts(loadedScene)
-  //     scenes.push({ ...loadedScene, preview })
-  //   }
-  //   return { scenes, design }
-  // }
-
-  // const loadVideoTemplate = async (payload: IDesign) => {
-  //   const scenes = []
-  //   const { scenes: scns, ...design } = payload
-
-  //   for (const scn of scns) {
-  //     const design: IScene = {
-  //       name: "Awesome template",
-  //       frame: payload.frame,
-  //       id: scn.id,
-  //       layers: scn.layers,
-  //       metadata: {},
-  //       duration: scn.duration,
-  //     }
-  //     const loadedScene = await loadVideoEditorAssets(design)
-
-  //     const preview = (await editor.renderer.render(loadedScene)) as string
-  //     await loadTemplateFonts(loadedScene)
-  //     scenes.push({ ...loadedScene, preview })
-  //   }
-  //   return { scenes, design }
-  // }
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
@@ -263,7 +173,7 @@ const Navbar = () => {
     const { data } = await axios.get(
       "https://its-besides-minneapolis-logging.trycloudflare.com/proxy?endpoint=getTemplates"
     )
-    const categoryArray:any = categories.concat(data.data.categoryData)
+    const categoryArray: any = categories.concat(data.data.categoryData)
     setCategories(categoryArray)
     setFetchedTemplates(data.data.templateData)
     setFilteredTemplates(data.data.templateData)
