@@ -3605,7 +3605,7 @@ export const sampleFrames = [
       width: 17.72,
       heigth: 6.56,
     },
-    unit: "inch",
+    unit: "px",
     preview: "https://ik.imagekit.io/scenify/social-facebook-event-cover.svg",
   },
   {

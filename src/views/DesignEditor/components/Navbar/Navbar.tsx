@@ -83,8 +83,6 @@ const Navbar = () => {
         name: scn.name,
       }
     })
-console.log(currentDesign.frame.width, currentDesign.frame.height)
-
     const frameInInches={
       width:currentDesign.frame.width/96,
       height:currentDesign.frame.height/96
