@@ -179,29 +179,47 @@ const ResizeTemplate = () => {
   const frame = useFrame()
 
   React.useEffect(() => {
-    if (frame) {
+     if (frame) {
+      
       setDesiredFrame({
-        width: frame.width,
-        height: frame.height,
+        width: parseFloat((frame.width * 0.0104166667).toFixed(2)),
+        height: parseFloat((frame.height * 0.0104166667).toFixed(2)),
       })
     }
   }, [frame])
 
   const applyResize = () => {
     // @ts-ignore
-    const size = activeKey === "0" ? selectedFrame : desiredFrame
-    if (editor) {
-      editor.frame.resize({
-        width: parseInt(size.width),
-        height: parseInt(size.height),
-      })
-      setCurrentDesign({
-        ...currentDesign,
-        frame: {
-          width: parseInt(size.width),
-          height: parseInt(size.height),
-        },
-      })
+    const size = activeKey === "0" ? selectedFrame : desiredFrame    
+    
+    if (activeKey === "1"){
+      if (editor) {
+        editor.frame.resize({
+          width: parseFloat(size.width)*96,
+          height: parseFloat(size.height)*96,
+        })
+        setCurrentDesign({
+          ...currentDesign,
+          frame: {
+            width: parseFloat(size.width)*96,
+            height: parseFloat(size.height)*96,
+          },
+        })
+      }
+    }else{
+      if (editor) {
+        editor.frame.resize({
+          width: parseFloat(size.width),
+          height: parseFloat(size.height),
+        })
+        setCurrentDesign({
+          ...currentDesign,
+          frame: {
+            width: parseFloat(size.width),
+            height: parseFloat(size.height),
+          },
+        })
+      }
     }
     setIsOpen(false)
   }
@@ -308,7 +326,7 @@ const ResizeTemplate = () => {
                         <Block $style={{ fontSize: "13px", textAlign: "center" }}>
                           <Block $style={{ fontWeight: 500 }}>{sampleFrame.name}</Block>
                           <Block $style={{ color: "rgb(119,119,119)" }}>
-                            {sampleFrame.width} x {sampleFrame.height}px
+                            {sampleFrame.frameInInches.width + " x " + sampleFrame.frameInInches.heigth} inches
                           </Block>
                         </Block>
                       </Block>
@@ -323,7 +341,7 @@ const ResizeTemplate = () => {
                   $style={{ display: "grid", gridTemplateColumns: "1fr 50px 1fr", alignItems: "end", fontSize: "14px" }}
                 >
                   <Input
-                    onChange={(e: any) => setDesiredFrame({ ...desiredFrame, width: e.target.value })}
+                    onChange={(e: any) => setDesiredFrame({ ...desiredFrame, width: e.target.value})}
                     value={desiredFrame.width}
                     startEnhancer="W"
                     size={SIZE.compact}

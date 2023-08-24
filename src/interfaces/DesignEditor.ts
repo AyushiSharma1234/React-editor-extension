@@ -26,6 +26,7 @@ export interface IDesign {
   id: string
   name: string
   frame: IFrame
+  frameInInches: IFrame
   type: string
   scenes: any[]
   preview: { id: string; src: string }[] | null

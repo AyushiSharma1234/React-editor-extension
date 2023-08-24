@@ -83,6 +83,12 @@ const Navbar = () => {
         name: scn.name,
       }
     })
+console.log(currentDesign.frame.width, currentDesign.frame.height)
+
+    const frameInInches={
+      width:currentDesign.frame.width/96,
+      height:currentDesign.frame.height/96
+    }
 
     if (currentDesign) {
       const graphicTemplate: IDesign = {
@@ -90,6 +96,7 @@ const Navbar = () => {
         type: "GRAPHIC",
         name: currentDesign.name,
         frame: currentDesign.frame,
+        frameInInches,
         scenes: updatedScenes,
         metadata: {},
         preview: null,
@@ -234,7 +241,7 @@ const Navbar = () => {
               },
             }}
           >
-            Export
+            Save
           </Button>
         </Block>
       </Container>
