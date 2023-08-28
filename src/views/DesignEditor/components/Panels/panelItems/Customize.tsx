@@ -306,14 +306,11 @@ const ResizeTemplate = () => {
                         $style={{
                           padding: "0.5rem",
                           backgroundColor: selectedFrame.id === sampleFrame.id ? "rgb(243,244,245)" : "#ffffff",
-                          ":hover": {
-                            backgroundColor: "rgb(246,247,248)",
-                            cursor: "pointer",
-                          },
                         }}
                         key={index}
                       >
                         <Block
+                        className="chooseTemplateImg"
                           $style={{
                             height: "120px",
                             display: "flex",
@@ -321,7 +318,11 @@ const ResizeTemplate = () => {
                             justifyContent: "center",
                           }}
                         >
-                          <img src={sampleFrame.preview} />
+                          <img src={sampleFrame.preview} style={{
+                            maxWidth: '100%',
+                            height: '100%',
+                            objectFit: 'contain'
+                          }}/>
                         </Block>
                         <Block $style={{ fontSize: "13px", textAlign: "center" }}>
                           <Block $style={{ fontWeight: 500 }}>{sampleFrame.name}</Block>

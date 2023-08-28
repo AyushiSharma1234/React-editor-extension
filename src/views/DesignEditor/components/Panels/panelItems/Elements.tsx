@@ -5,7 +5,7 @@ import { Block } from "baseui/block"
 import { Button, SIZE } from "baseui/button"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import Scrollable from "~/components/Scrollable"
-import { graphics } from "~/constants/mock-data"
+import { callouts, complexShapes, emojis, graphics } from "~/constants/mock-data"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 
 const Elements = () => {
@@ -20,6 +20,19 @@ const Elements = () => {
     },
     [editor]
   )
+
+   const addEmojies = React.useCallback(
+     (url: any) => {
+       if (editor) {
+         const options = {
+           type: "StaticImage",
+           src: url,
+         }
+         editor.objects.add(options)
+       }
+     },
+     [editor]
+   )
 
   return (
     <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -54,9 +67,41 @@ const Elements = () => {
           </Button>
         </Block> */}
         <Block>
-          <Block $style={{ display: "grid", gap: "8px", padding: "1.5rem", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
+          <Block
+            $style={{
+              display: "flex",
+              flexWrap: "wrap",
+              background: " #f8f8fb",
+              padding: "0 0px 0 30px",
+            }}
+          >
+            <Block $style={{ width: "100%" }}>
+              {graphics.map((graphic) => graphic.shapes).filter((shape, index, arr) => arr.indexOf(shape) === index)}
+            </Block>
             {graphics.map((graphic, index) => (
               <ImageItem onClick={() => addObject(graphic)} key={index} preview={graphic.preview} />
+            ))}
+            <Block $style={{ width: "100%" }}>
+              {callouts.map((callout) => callout.shapes).filter((shape, index, arr) => arr.indexOf(shape) === index)}
+            </Block>
+            {callouts.map((callout, index) => (
+              <ImageItem onClick={() => addObject(callout)} key={index} preview={callout.preview} />
+            ))}
+
+            <Block $style={{ width: "100%" }}>
+              {complexShapes
+                .map((complexShape) => complexShape.shapes)
+                .filter((shape, index, arr) => arr.indexOf(shape) === index)}
+            </Block>
+            {complexShapes.map((complexShape, index) => (
+              <ImageItem onClick={() => addObject(complexShape)} key={index} preview={complexShape.preview} />
+            ))}
+
+            <Block $style={{ width: "100%" }}>
+              {emojis.map((emoji) => emoji.shapes).filter((shape, index, arr) => arr.indexOf(shape) === index)}
+            </Block>
+            {emojis.map((emoji, index) => (
+              <ImageItem onClick={() => addEmojies(emoji.preview)} key={index} preview={emoji.preview} />
             ))}
           </Block>
         </Block>
@@ -76,9 +121,14 @@ const ImageItem = ({ preview, onClick }: { preview: any; onClick?: (option: any)
         cursor: "pointer",
         borderRadius: "8px",
         overflow: "hidden",
+        maxWidth: "calc(25% - 30px)",
+        flex: "0 0 calc(25% - 30px)",
+        margin: " 10px 0px",
+        display: " flex",
+        flexWrap: "wrap",
+        padding: "0 30px 0 0 ;",
         ":hover": {
-          opacity: 1,
-          background: "rgb(233,233,233)",
+          opacity: 0.8,
         },
       })}
     >
