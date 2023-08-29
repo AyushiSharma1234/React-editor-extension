@@ -168,7 +168,7 @@ const Images = () => {
             <Block padding="0 1.5rem">
               <div style={{ display: "grid", gap: "8px", gridTemplateColumns: "1fr 1fr"}}>
                 {images.map((image, index) => {
-                  return <ImageItem key={index} onClick={() => addObject('https://images.pexels.com/photos/3493777/pexels-photo-3493777.jpeg?auto=compress&cs=tinysrgb&h=650&w=940')} preview={image.src.small} />
+                  return <ImageItem key={index} onClick={() => addObject(image.src.large)} preview={image.src.small} />
                 })}
               </div>
             </Block>
